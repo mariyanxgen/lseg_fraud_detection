@@ -34,12 +34,12 @@ const ArchitectureDiagram: React.FC<Props> = ({ nodes, connections, selectedNode
   };
 
   return (
-    <div className="relative w-full aspect-[16/10] bg-slate-900/50 rounded-xl border border-slate-700/50 shadow-2xl overflow-hidden backdrop-blur-sm">
+    <div className="relative w-full aspect-[16/10] bg-white rounded-xl border border-slate-200 shadow-xl overflow-hidden">
       
       {/* Background Grid */}
-      <div className="absolute inset-0 opacity-10" 
+      <div className="absolute inset-0 opacity-40" 
            style={{ 
-             backgroundImage: 'radial-gradient(#94a3b8 1px, transparent 1px)', 
+             backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)', 
              backgroundSize: '20px 20px' 
            }}>
       </div>
@@ -48,10 +48,10 @@ const ArchitectureDiagram: React.FC<Props> = ({ nodes, connections, selectedNode
       <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 1000 600">
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8" />
           </marker>
           <marker id="arrowhead-active" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" fill="#38bdf8" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7" />
           </marker>
         </defs>
         {connections.map((conn, idx) => {
@@ -67,14 +67,14 @@ const ArchitectureDiagram: React.FC<Props> = ({ nodes, connections, selectedNode
               <path
                 d={getPath(startNode, endNode, !!conn.curved)}
                 fill="none"
-                stroke={isConnectedToSelected ? '#38bdf8' : '#475569'}
+                stroke={isConnectedToSelected ? '#0284c7' : '#cbd5e1'}
                 strokeWidth={isConnectedToSelected ? 3 : 2}
                 markerEnd={isConnectedToSelected ? "url(#arrowhead-active)" : "url(#arrowhead)"}
                 className="transition-all duration-300"
                 strokeDasharray={conn.curved ? "5,5" : "none"}
               />
               {conn.label && (
-                <text x={(startNode.x * 10 + endNode.x * 10)/2 + 5} y={(startNode.y * 6 + endNode.y * 6)/2 + 5} fill="#94a3b8" fontSize="12" textAnchor="middle">
+                <text x={(startNode.x * 10 + endNode.x * 10)/2 + 5} y={(startNode.y * 6 + endNode.y * 6)/2 + 5} fill="#64748b" fontSize="12" textAnchor="middle">
                   {conn.label}
                 </text>
               )}
@@ -89,38 +89,38 @@ const ArchitectureDiagram: React.FC<Props> = ({ nodes, connections, selectedNode
           const isSelected = selectedNode?.id === node.id;
           
           // Determine Border/Glow color based on TechStack
-          let borderColor = 'border-slate-600';
-          let shadowClass = '';
-          let iconColor = 'text-slate-400';
+          let borderColor = 'border-slate-200';
+          let shadowClass = 'shadow-md';
+          let iconColor = 'text-slate-600';
           let badgeColor = 'bg-slate-600';
 
           if (node.techStack === TechStack.AZURE) {
             badgeColor = 'bg-cyan-600';
             if (isSelected) {
                borderColor = 'border-cyan-500';
-               shadowClass = 'shadow-[0_0_20px_rgba(6,182,212,0.5)]';
-               iconColor = 'text-cyan-400';
+               shadowClass = 'shadow-[0_0_15px_rgba(6,182,212,0.3)] ring-1 ring-cyan-500';
+               iconColor = 'text-cyan-600';
             }
           } else if (node.techStack === TechStack.DATABRICKS) {
              badgeColor = 'bg-orange-600';
              if (isSelected) {
                borderColor = 'border-orange-500';
-               shadowClass = 'shadow-[0_0_20px_rgba(249,115,22,0.5)]';
-               iconColor = 'text-orange-400';
+               shadowClass = 'shadow-[0_0_15px_rgba(249,115,22,0.3)] ring-1 ring-orange-500';
+               iconColor = 'text-orange-600';
              }
           } else if (node.techStack === TechStack.MICROSOFT) {
              badgeColor = 'bg-blue-700';
              if (isSelected) {
                 borderColor = 'border-blue-500';
-                shadowClass = 'shadow-[0_0_20px_rgba(59,130,246,0.5)]';
-                iconColor = 'text-blue-400';
+                shadowClass = 'shadow-[0_0_15px_rgba(59,130,246,0.3)] ring-1 ring-blue-500';
+                iconColor = 'text-blue-600';
              }
           } else {
              // Generic
              if (isSelected) {
                 borderColor = 'border-blue-500';
-                shadowClass = 'shadow-[0_0_20px_rgba(59,130,246,0.5)]';
-                iconColor = 'text-blue-400';
+                shadowClass = 'shadow-[0_0_15px_rgba(59,130,246,0.3)] ring-1 ring-blue-500';
+                iconColor = 'text-blue-600';
              }
           }
 
@@ -134,34 +134,34 @@ const ArchitectureDiagram: React.FC<Props> = ({ nodes, connections, selectedNode
               <div 
                 className={`
                   relative flex flex-col items-center 
-                  w-48 p-3 bg-slate-800 rounded-lg border-2 ${borderColor} ${shadowClass}
-                  transition-colors duration-300
+                  w-48 p-3 bg-white rounded-lg border-2 ${borderColor} ${shadowClass}
+                  transition-all duration-300
                 `}
               >
-                <div className={`mb-2 p-2 rounded-full bg-slate-900 ${iconColor}`}>
+                <div className={`mb-2 p-2 rounded-full bg-slate-50 ${iconColor}`}>
                   <node.icon size={24} />
                 </div>
-                <h3 className="text-xs font-bold text-slate-200 text-center leading-tight mb-1">
+                <h3 className="text-xs font-bold text-slate-800 text-center leading-tight mb-1">
                   {node.label}
                 </h3>
                 {node.subLabel && (
-                  <span className="text-[10px] text-slate-400 text-center font-medium uppercase tracking-wider mb-2">
+                  <span className="text-[10px] text-slate-500 text-center font-medium uppercase tracking-wider mb-2">
                     {node.subLabel}
                   </span>
                 )}
                 
                 {/* Tech Stack Details List */}
-                <div className="w-full pt-2 border-t border-slate-700/50 flex flex-col gap-1">
+                <div className="w-full pt-2 border-t border-slate-100 flex flex-col gap-1">
                   {node.techDetails.slice(0, 3).map((tech, i) => (
                     <div key={i} className="flex items-center gap-1.5 justify-center">
                        <div className={`w-1 h-1 rounded-full ${node.techStack === TechStack.AZURE ? 'bg-cyan-500' : node.techStack === TechStack.DATABRICKS ? 'bg-orange-500' : 'bg-slate-500'}`}></div>
-                       <span className="text-[9px] text-slate-400 text-center truncate leading-tight max-w-[90%]">
+                       <span className="text-[9px] text-slate-600 text-center truncate leading-tight max-w-[90%]">
                          {tech}
                        </span>
                     </div>
                   ))}
                   {node.techDetails.length > 3 && (
-                    <div className="text-[8px] text-slate-500 text-center italic mt-0.5">
+                    <div className="text-[8px] text-slate-400 text-center italic mt-0.5">
                       + {node.techDetails.length - 3} more...
                     </div>
                   )}
